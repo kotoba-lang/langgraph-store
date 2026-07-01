@@ -1,0 +1,27 @@
+{:paths ["src"]
+ ;; langgraph-store — a langgraph-clj graph's two small storage primitives
+ ;; that every JVM LangGraph app needed identically: a content-addressed
+ ;; blob store (generated images/media, offloaded from the datom store) and
+ ;; a latest-only checkpointer (bounded per-thread state, not the unbounded
+ ;; per-superstep accumulation langgraph's own datomic-checkpointer does).
+ ;; Extracted verbatim from mangaka.{blob,checkpoint} / animeka.{blob,
+ ;; checkpoint}, which were byte-identical copies of each other, via a
+ ;; short-lived kotoba-lang/genapp-clj. See
+ ;; 90-docs/adr/2607011816-ghosthacker-shiropico-standalone-repo.md and
+ ;; 90-docs/adr/2607011900-genapp-clj-mangaka-animeka-commons.md for the
+ ;; history.
+ :deps
+ {io.github.kotoba-lang/langgraph {:git/sha "5b4e5e70837b849b14b6a5800894e3be202ad5fa"}
+  io.github.kotoba-lang/langchain {:git/sha "c74e358c486bdbbed415261abe352ae73831bb8e"}}
+
+ :aliases
+ {:dev
+  {:override-deps
+   {io.github.kotoba-lang/langgraph {:local/root "../langgraph"}
+    io.github.kotoba-lang/langchain {:local/root "../langchain"}}}
+
+  :test
+  {:extra-paths ["test"]
+   :extra-deps {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :main-opts ["-m" "cognitect.test-runner"]
+   :exec-fn cognitect.test-runner.api/test}}}
