@@ -1,9 +1,4 @@
-{:path
-        ;; kotoba.lang.text, not clojure.string. Pinned as an explicit floor:
-        ;; tools.deps takes the NEWEST sha it is shown, so without a floor here
-        ;; this repo silently rides whatever a sibling happens to name.
-        io.github.kotoba-lang/text {:git/sha "73bdb13ae7a3d004b44bca08be03a3191157a38f"}
-       s ["src"]
+{:paths ["src"]
  ;; langgraph-store — a langgraph-clj graph's two small storage primitives
  ;; that every JVM LangGraph app needed identically: a content-addressed
  ;; blob store (generated images/media, offloaded from the datom store) and
@@ -16,7 +11,12 @@
  ;; 90-docs/adr/2607011900-genapp-clj-mangaka-animeka-commons.md for the
  ;; history.
  :deps
- {io.github.kotoba-lang/langgraph {:git/sha "5b4e5e70837b849b14b6a5800894e3be202ad5fa"}
+ {
+        ;; kotoba.lang.text, not clojure.string. Pinned as an explicit floor:
+        ;; tools.deps takes the NEWEST sha it is shown, so without a floor here
+        ;; this repo silently rides whatever a sibling happens to name.
+        io.github.kotoba-lang/text {:git/sha "73bdb13ae7a3d004b44bca08be03a3191157a38f"}
+       io.github.kotoba-lang/langgraph {:git/sha "5b4e5e70837b849b14b6a5800894e3be202ad5fa"}
   io.github.kotoba-lang/langchain {:git/sha "c74e358c486bdbbed415261abe352ae73831bb8e"}}
 
  :aliases
