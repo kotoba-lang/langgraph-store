@@ -1,6 +1,6 @@
 (ns langgraph-store.blob-test
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [langgraph-store.blob :as blob]))
 
 (deftest blob-round-trip-and-dedup
