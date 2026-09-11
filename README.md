@@ -29,5 +29,5 @@ their natural homes next to the pure engines they wire. See
 ## Test
 
 ```bash
-clojure -M:dev:test
+kbb -M:dev:test
 ```
