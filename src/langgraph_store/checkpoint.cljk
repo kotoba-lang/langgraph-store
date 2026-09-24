@@ -12,7 +12,7 @@
 
   Extracted verbatim from mangaka.checkpoint / animeka.checkpoint, which were
   byte-identical copies (differing only in docstrings)."
-  (:require #?(:clj [clojure.edn :as edn]
+  (:require #?(:clj [kotoba.lang.edn :as edn]
                :cljs [cljs.reader :as edn])
             [langgraph.checkpoint :as cp]
             [langchain.db :as db]))
