@@ -13,8 +13,8 @@
   The protocol is portable .cljc; the impls are JVM (sha256 + base64). Two
   backends: in-memory (dev) and filesystem (persistent)."
   #?(:clj (:require [clojure.java.io :as io]))
-  #?(:clj (:import [java.security MessageDigest] [java.util Base64]
-                   [java.nio.file Files])))
+  #?(:clj (:import [java.security MessageDigest]))
+  (:require [kotoba.bytes :as kbytes] [kotoba.io :as kio]))
 
 (defprotocol Blobs
   (-put! [b b64 mime] "Store a base64 image; returns a content-addressed key.")
@@ -36,7 +36,7 @@
      (let [store (atom {})]
        (reify Blobs
          (-put! [_ b64 mime]
-           (let [bs  (.decode (Base64/getDecoder) ^String b64)
+           (let [bs  (kbytes/base64-decode-bytes ^String b64)
                  k   (str "sha256-" (sha256-hex bs))]
              (swap! store assoc k {:b64 b64 :mime mime})
              k))
@@ -52,7 +52,7 @@
        (.mkdirs d)
        (reify Blobs
          (-put! [_ b64 mime]
-           (let [bs (.decode (Base64/getDecoder) ^String b64)
+           (let [bs (kbytes/base64-decode-bytes ^String b64)
                  k  (str "sha256-" (sha256-hex bs))]
              (io/copy bs (io/file d k))
              (spit (io/file d (str k ".mime")) (or mime "application/octet-stream"))
@@ -61,7 +61,7 @@
            (let [f (io/file d k)]
              (when (.exists f)
                (let [mf (io/file d (str k ".mime"))]
-                 {:b64 (.encodeToString (Base64/getEncoder) (Files/readAllBytes (.toPath f)))
+                 {:b64 (kbytes/base64-encode (kio/read-all-bytes f))
                   :mime (when (.exists mf) (slurp mf))}))))))))
 
 #?(:clj
